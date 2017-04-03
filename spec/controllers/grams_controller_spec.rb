@@ -11,10 +11,23 @@ RSpec.describe GramsController, type: :controller do
     end
   end
 
+  # Test for new form page
   describe "grams#new action" do
     it "should successfully show the new form" do
+      # triggers an HTTP GET request to the new action of the controller
       get :new
       expect(response).to have_http_status(:success)
+    end
+  end
+
+  # Test for create form page
+  describe "grams#create action" do
+    it "should successfully create a new gram in our database" do
+      post :create, params: { gram: { message: 'Hello!' } }
+      expect(response).to redirect_to root_path
+      # Expect the message of the gram to equal Hello!
+      gram = Gram.last
+      expect(gram.message).to eq("Hello!")
     end
   end
 end

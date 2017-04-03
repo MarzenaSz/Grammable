@@ -59,3 +59,6 @@ end
 
 # Install Bootstrap
 gem 'bootstrap', '~> 4.0.0.alpha6'
+
+# Install Simple Form
+gem 'simple_form'
