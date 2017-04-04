@@ -1,16 +1,21 @@
 class GramsController < ApplicationController
-
+  before_action :authenticate_user!, only: [:new, :create]
+  
   def index
 
   end
 
   def new
+    # Create a new gram
     @gram = Gram.new
   end
 
   def create
-    @gram = Gram.create(gram_params)
-
+    # connect this gram to current user
+    @gram = current_user.grams.create(gram_params)
+    # Check if gram is valid (the user typed something in a text field)
+    # if it is then redirect user to the home page
+    # otherwise stay on new page and show unprocessable_entity message
     if @gram.valid?
       redirect_to root_path
     else
