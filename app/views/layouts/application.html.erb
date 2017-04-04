@@ -3,12 +3,25 @@
   <head>
     <title>Grammable</title>
     <%= csrf_meta_tags %>
-
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
-    <%= yield %>
+    <% if current_user %>
+      You're signed in as <%= current_user.email %>.
+      <%= link_to "Log out", destroy_user_session_path, method: :delete %>
+    <% else %>
+      <%= link_to "Log In", new_user_session_path %>
+      <%= link_to "Sign Up", new_user_registration_path %>
+    <% end %>
+    <!-- Display only when a notice or alert exists -->
+    <% if notice.present? %>
+      <p class="notice"><%= notice %></p>
+    <% end %>
+    <% if alert.present? %>
+      <p class="alert"><%= alert %></p>
+    <% end %>
+  <%= yield %>
   </body>
 </html>

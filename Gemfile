@@ -62,3 +62,6 @@ gem 'bootstrap', '~> 4.0.0.alpha6'
 
 # Install Simple Form
 gem 'simple_form'
+
+# Install Devise for user authentication
+gem 'devise'
