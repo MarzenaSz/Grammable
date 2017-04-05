@@ -20,12 +20,8 @@ RSpec.describe GramsController, type: :controller do
     end
 
     it "should successfully show the new form" do
-      # Create a user before the action in our controller
-      user = User.create(
-        email: 'fakeuser@gmail.com',
-        password: 'secretPassword',
-        password_confirmation: 'secretPassword'
-        )
+      # Create a user using FactoryGirl before the action in our controller
+      user = FactoryGirl.create(:user)
       sign_in user
       # triggers an HTTP GET request to the new action of the controller
       get :new
@@ -43,11 +39,7 @@ RSpec.describe GramsController, type: :controller do
 
     it "should successfully create a new gram in our database" do
       # Create a user before the action in our controller
-      user = User.create(
-        email:                 'fakeuser@gmail.com',
-        password:              'secretPassword',
-        password_confirmation: 'secretPassword'
-        )
+      user = FactoryGirl.create(:user)
       sign_in user
 
       post :create, params: { gram: { message: 'Hello!' } }
@@ -61,11 +53,7 @@ RSpec.describe GramsController, type: :controller do
     # Test for validation errors
     it "should properly deal with validation errors" do
       # Create a user before the action in our controller
-      user = User.create(
-        email:                 'fakeuser@gmail.com',
-        password:              'secretPassword',
-        password_confirmation: 'secretPassword'
-        )
+      user = FactoryGirl.create(:user)
       sign_in user
 
       gram_count = Gram.count
