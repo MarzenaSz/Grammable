@@ -1,11 +1,28 @@
 require 'rails_helper'
 
 RSpec.describe GramsController, type: :controller do
+  # Test for our show page
+  describe "grams#show action" do
+    it "should successfully show the page if the gram is found" do
+      # Push a new gram into the database
+      gram = FactoryGirl.create(:gram)
+      # Trigger an HTTP GET request to /grams/:id, where the id is replaced by the gram we just created 
+      get :show, params: { id: gram.id }
+      # Expect the response to have a successful HTTP status code
+      expect(response).to have_http_status(:success)
+    end
+
+    it "should return a 404 error if the gram is not found" do
+      get :show, params: { id: 'TACOCAT' }
+      expect(response).to have_http_status(:not_found)
+    end
+  end
+
   # Test for our root page
   describe "grams#index action" do
 
     it "should successfully show the page" do
-      # triggers an HTTP GET request to the index action of the controller
+      # Trigger an HTTP GET request to the index action of the controller
       get :index
       expect(response).to have_http_status(:success)
     end
@@ -23,7 +40,7 @@ RSpec.describe GramsController, type: :controller do
       # Create a user using FactoryGirl before the action in our controller
       user = FactoryGirl.create(:user)
       sign_in user
-      # triggers an HTTP GET request to the new action of the controller
+      # Trigger an HTTP GET request to the new action of the controller
       get :new
       expect(response).to have_http_status(:success)
     end
