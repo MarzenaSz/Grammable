@@ -1,6 +1,48 @@
 require 'rails_helper'
 
 RSpec.describe GramsController, type: :controller do
+   # Test for our update page
+  describe "grams#update action" do
+    it "should allow users to successfully update grams" do
+      # Create a gram and specify the message to be "Initial Value"
+      gram = FactoryGirl.create(:gram, message: "Initial Value")
+      # Trigger an HTTP PATCH request to the update action and use the form data to be "Changed".
+      patch :update, params: { id: gram.id, gram: { message: 'Changed' } }
+      # Redirect to the home page
+      expect(response).to redirect_to root_path
+      gram.reload
+      expect(gram.message).to eq "Changed"
+    end
+
+    it "should have http 404 error if the gram cannot be found" do
+      patch :update, params: { id: "YOLOSWAG", gram: { message: 'Changed' } }
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it "should render the edit form with an http status of unprocessable_entity" do
+      # Create a gram in the database with the message Initial Value
+      gram = FactoryGirl.create(:gram, message: "Initial Value")
+      # Perform an HTTP PATCH request to the update action, but with the message the empty string
+      patch :update, params: { id: gram.id, gram: { message: '' } }
+      expect(response).to have_http_status(:unprocessable_entity)
+      # Reload our gram from the database to make sure it has it's latest value
+      gram.reload
+      expect(gram.message).to eq "Initial Value"
+    end
+  end
+  # Test for our edit page
+  describe "grams#edit action" do
+    it "should successfully show the edit form if the gram is found" do
+      gram = FactoryGirl.create(:gram)
+      get :edit, params: { id: gram.id }
+      expect(response).to have_http_status(:success)
+    end
+
+    it "should return a 404 error message if the gram is not found" do
+      get :edit, params: { id: 'SWAG' }
+      expect(response).to have_http_status(:not_found)
+    end
+  end
   # Test for our show page
   describe "grams#show action" do
     it "should successfully show the page if the gram is found" do
