@@ -66,3 +66,8 @@ gem 'simple_form'
 
 # Install Devise for user authentication
 gem 'devise'
+
+# Install CarrierWave gem for image uploading
+gem 'carrierwave', '~> 1.0'
+gem "figaro"
+gem "fog"
